@@ -131,6 +131,7 @@ h3 {
     text-decoration: none;
     padding: 5px px;
     transition: background-color 0.3s;
+    margin-left: 20px;
 }
 .navbar a:hover {
     background-color: #D4AF37;
