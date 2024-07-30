@@ -1,0 +1,88 @@
+CREATE DATABASE Luxora;
+USE Luxora;
+
+
+CREATE TABLE Rol (
+    Id_rol INT PRIMARY KEY,
+    Rol_nombre VARCHAR(20) NOT NULL
+);
+
+INSERT INTO Rol (Id_rol, Rol_nombre)
+VALUES (1, 'Administrador');
+
+
+INSERT INTO Rol (Id_rol, Rol_nombre)
+VALUES (2, 'Usuario');
+
+
+CREATE TABLE Usuarios (
+    Id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre_usuario VARCHAR(100) NOT NULL,
+    Clave VARCHAR(60) NOT NULL,  
+    Email VARCHAR(100) NOT NULL,
+    Rol INT NOT NULL,
+    Calle VARCHAR(100) NOT NULL,
+    Colonia VARCHAR(100) NOT NULL,
+    Municipio VARCHAR(100) NOT NULL,
+    Estado VARCHAR(100) NOT NULL,
+    CP VARCHAR(10) NOT NULL,
+    INDEX (Rol),
+    FOREIGN KEY (Rol) REFERENCES Rol(Id_rol)
+);
+
+
+CREATE TABLE Metodo_de_pago(
+    Id_metodo INT PRIMARY KEY AUTO_INCREMENT,
+    Id_usuario INT NOT NULL,
+    Num_tarjeta VARCHAR(16) NOT NULL,
+    Vencimiento VARCHAR(5) NOT NULL,
+    CVV VARCHAR(3) NOT NULL,
+    INDEX (Id_usuario),
+    FOREIGN KEY (Id_usuario) REFERENCES Usuarios(Id_usuario)
+);
+
+
+CREATE TABLE Articulos (
+    Id_articulo INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre_articulo VARCHAR(50) NOT NULL,
+    Descripcion VARCHAR(255),
+    Precio DECIMAL(10, 2) NOT NULL,
+    Disponibilidad INT NOT NULL,
+    Imagen VARCHAR(100) NOT NULL,
+    Marca VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Compras(
+    Id_compra INT PRIMARY KEY AUTO_INCREMENT,
+    Id_usuario INT NOT NULL,
+    Id_articulo INT NOT NULL,
+    Id_metodo INT NOT NULL,
+    Cantidad INT NOT NULL,
+    Fecha_compra DATE NOT NULL,
+    Fecha_arrivo DATE NOT NULL,
+    Precio_total DECIMAL(10, 2) NOT NULL,
+    Talla CHARACTER NOT NULL,
+    INDEX (Id_usuario),
+    INDEX (Id_articulo),
+    INDEX (Id_metodo),
+    FOREIGN KEY (Id_metodo) REFERENCES Metodo_de_pago(Id_metodo),
+    FOREIGN KEY (Id_usuario) REFERENCES Usuarios(Id_usuario),
+    FOREIGN KEY (Id_articulo) REFERENCES Articulos(Id_articulo)
+);
+
+INSERT INTO Metodo_de_pago(Id_usuario,Num_tarjeta,Vencimiento,CVV)
+VALUES (1,"1234567890123456","12/23","123");
+
+INSERT INTO Compras (Id_usuario,Id_articulo,Id_metodo,Cantidad,Fecha_compra,Fecha_arrivo,Precio_total,Talla)
+VALUES (1,1,1,2,"2024-07-30","2024-07-30",200,"M");
+
+#Modificaciones en la base de datos
+#Imagen en la tabla  articulos ya no es BLOB ahora es VARCHAR
+#En la tabla compras se añadio el campo talla y las fechas cambiaron de dato tipo TIMESTAMP A DATE, para quitar la hroa y que solo aparezca la fecha
+
+SELECT*FROM Usuarios;
+SELECT*FROM Compras;
+SELECT*FROM Articulos;
+
+
+DROP DATABASE Luxora;
