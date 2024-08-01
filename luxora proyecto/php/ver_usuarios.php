@@ -1,6 +1,6 @@
 <?php
 include "conexion.php";
-
+//Selecciona todos los usuarios
 $sql = "SELECT Id_usuario,Nombre_usuario, Email, Rol FROM Usuarios";
 $result = $conn->query($sql);
 
@@ -11,7 +11,7 @@ if ($result->num_rows > 0) {
         $usuarios[] = $row;
     }
 }
-
+//Los devuelve en un json
 echo json_encode($usuarios);
 
 $conn->close();

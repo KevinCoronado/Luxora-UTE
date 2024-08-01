@@ -1,8 +1,7 @@
 <?php
-// Incluir el archivo de conexión
 include 'conexion.php';
 
-// Crear la consulta SQL para obtener los datos requeridos
+// Crea la consulta SQL para obtener los datos requeridos
 $sql = "
     SELECT 
         u.Nombre_usuario AS Nombre,
