@@ -1,0 +1,6 @@
+Cambios personales que cada quien tiene que hacer
+
+1 - Conexion.php  Cambiar los datos para conectar a la base de datos
+2 - Agregar_productos.php  Cambiar la direccion de $carpeta destino a la direccion de su carpeta imagenes-productos segun como les salga a ustedes 
+3 - Repetir paso 2 en Editar_articulo.php
+4 - Checar Base de Datos con cambios donde estan los ultimso cambios a la base de datos
