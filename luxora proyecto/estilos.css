@@ -401,13 +401,13 @@ table tr:hover {
     }
 }
 
-.pagination {
+.paginacion {
     display: flex;
     justify-content: center;
     margin-top: 1rem;
 }
 
-.pagination button {
+.paginacion button {
     background-color: #D4AF37;
     border: none;
     color: white;
@@ -417,11 +417,11 @@ table tr:hover {
     border-radius: 4px;
 }
 
-.pagination button:hover {
+.paginacion button:hover {
     background-color: #a08428;
 }
 
-.pagination .active {
+.paginacion .active {
     background-color: #a08428;
 }
 
@@ -482,3 +482,14 @@ table tr:hover {
 
 /*NUEVOS CAMBIOS IR DEBAJO DE AQUI ULTIMO CAMBIO 30/07/24 1:23AM
 
+ .containerArticulos {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1100px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/*NUEVOS CAMBIOS IR DEBAJO DE AQUI ULTIMO CAMBIO 31/07/24 10:18PM
