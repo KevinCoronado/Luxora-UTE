@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="estilos.css">
-
     <title>Productos Admin</title>
 </head>
 <body>
@@ -25,19 +24,19 @@
    
     <div class="containerRegistroAdmin">
         <h2>Agregar Producto</h2>
-        <form id="agregarUsuarioForm" action="php/agregar_productos.php" method="post" enctype="multipart/form-data">
+        <form id="agregarArticuloForm" action="php/agregar_productos.php" method="post" enctype="multipart/form-data">
             <div class="form-row">
                 <div class="form-group">
                     <label for="nombre">Nombre del articulo</label>
-                    <input type="text" id="nombre" name="nombre" required>
+                    <input type="text" id="nombre" name="nombre"  maxlength="30" required>
                 </div>
                 <div class="form-group">
                     <label for="descripcion">Descripcion</label>
-                    <input type="text" id="descripcion" name="descripcion" required>
+                    <input type="text" id="descripcion" name="descripcion"  maxlength="30" required>
                 </div>
                 <div class="form-group">
                     <label for="marca">Marca</label>
-                    <input type="text" id="marca" name="marca" required>
+                    <input type="text" id="marca" name="marca"  maxlength="30" required>
                 </div>
                 <div class="form-group">
                     <label for="imagen">Imagen</label>
@@ -57,10 +56,10 @@
     </div>
 
 
-    <div class="containerUsuarios">
+    <div class="containerArticulos">
         <h2>Lista de Productos</h2>
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Buscar por nombre o marca...">
+            <input type="text" id="searchInput" placeholder="Buscar por nombre, marca o id...">
         </div>
         <table>
             <thead>
@@ -80,19 +79,21 @@
             </thead>
         </table>
 
-        <div id="pagination" class="pagination">
-            <!-- Paginación será añadida aquí dinámicamente -->
+        <div id="paginacion" class="paginacion">
         </div>
     </div>
 
 
     <script>
 
-        
-        document.getElementById('agregarUsuarioForm').addEventListener('submit', function(event) {
+        //Se agrega el articulo
+        document.getElementById('agregarArticuloForm').addEventListener('submit', function(event) {
+            //Evita que el formulario recargue la pagina
             event.preventDefault();
+            //Mete los datos en un formData
             const formData = new FormData(this);
             
+            //Usa el php
             fetch('php/agregar_productos.php', {
                 method: 'POST',
                 body: formData
@@ -112,20 +113,26 @@
             });
         });
 
+        //Se limita los articulos por pagina
         const articulosPorPagina = 10;
             let paginaActual = 1;
+            //Se crean los arrays
             let articulos = [];
             let articulosFiltrados = [];
 
 
+        //Esta funcion muestra los articulos en la tabla
         function mostrarArticulos(pagina) {
+            //Identifica y limpia la tabla
             const tablaCuerpo = document.getElementById('articulosTableBody');
             tablaCuerpo.innerHTML = '';
     
+            //Define los indices inicio y fin
             const inicio = (pagina - 1) * articulosPorPagina;
             const fin = inicio + articulosPorPagina;
             const articulosPagina = articulosFiltrados.slice(inicio, fin);
     
+            //Crea las filas 
             articulosPagina.forEach(articulo => {
                 const fila = document.createElement('tr');
                 fila.innerHTML = `
@@ -148,6 +155,7 @@
         }
 
 
+        //Llama los articulos
         function fetchArticulos() {
             fetch('php/ver_productos.php')
                 .then(response => response.json())
@@ -159,8 +167,9 @@
                 .catch(error => console.error('Error al obtener los articulos:', error));
         }
 
+        //Actualiza las paginas
             function actualizarPaginacion() {
-                const paginacion = document.getElementById('pagination');
+                const paginacion = document.getElementById('paginacion');
                 paginacion.innerHTML = '';
         
                 const numPaginas = Math.ceil(articulosFiltrados.length / articulosPorPagina);
@@ -177,21 +186,126 @@
                 }
             }
         
+            //Usa el searchInput para filtrar los articulos
             function filtrarArticulos() {
                 const query = document.getElementById('searchInput').value.toLowerCase();
                 articulosFiltrados = articulos.filter(articulo => 
                     articulo.Nombre_articulo.toLowerCase().includes(query) || 
-                    articulo.Marca.toLowerCase().includes(query)
+                    articulo.Marca.toLowerCase().includes(query) || 
+                    articulo.Id_articulo.toLowerCase().includes(query)
                 );
                 paginaActual = 1; // Reiniciar a la primera página
                 mostrarArticulos(paginaActual);
             }
         
-            // Manejar la entrada de búsqueda
+            // Maneja la entrada de búsqueda
             document.getElementById('searchInput').addEventListener('input', filtrarArticulos);
         
             fetchArticulos();
      
+
+        //Editar y eliminar
+
+        function editarArticulo(button) {
+            //Identifica los datos por el numero de celda
+            const row = button.closest('tr');
+            const id = row.cells[0];  
+            const nombre = row.cells[1].textContent;
+            const descripcion = row.cells[2].textContent;
+            const marca = row.cells[3].textContent;
+            const precio= row.cells[5].textContent;
+            const disponibilidad = row.cells[6].textContent;
+        
+            // Hacer que las celdas se vuelvan editables
+            row.cells[1].innerHTML = `<input type="text" value="${nombre}" />`;
+            row.cells[2].innerHTML = `<input type="text" value="${descripcion}" />`;
+            row.cells[3].innerHTML = `<input type="text" value="${marca}" />`;
+            row.cells[4].innerHTML = `<input type="file" />`;
+            row.cells[5].innerHTML = `<input type="text" value="${disponibilidad}" />`;
+            row.cells[6].innerHTML = `<input type="text" value="${precio}" />`;
+        
+            // Reemplazar el botón de Editar con Confirmar Edición y Cancelar
+            row.cells[7].innerHTML = `
+                <button  class="editar-btn" onclick="confirmarEdicion(this)">Confirmar Edición</button>
+                <button class="eliminar-btn" onclick="cancelarEdicion(this)">Cancelar</button>
+            `;
+        }
+
+        
+
+        //Manda los datos en un formData y actualiza el articulo
+        function confirmarEdicion(button, id) {
+            const row = button.closest('tr');
+            const idA = row.cells[0].textContent.trim();
+            const nombre = row.cells[1].querySelector('input').value;
+            const descripcion = row.cells[2].querySelector('input').value;
+            const marca = row.cells[3].querySelector('input').value;
+            const imagen = row.cells[4].querySelector('input[type="file"]');
+            const precio = row.cells[5].querySelector('input').value;
+            const disponibilidad = row.cells[6].querySelector('input').value;
+
+           
+            const formData2 = new FormData();
+                formData2.append('id', idA);
+                formData2.append('nombre', nombre);
+                formData2.append('descripcion', descripcion);
+                formData2.append('marca', marca);
+                formData2.append('imagen', imagen.files[0]);
+                formData2.append('precio', precio);
+                formData2.append('disponibilidad', disponibilidad);
+            fetch('php/editar_articulo.php', {
+                method: 'POST',
+                body: formData2
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    fetchArticulos();  
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        
+        //Reinicia la tabla
+        function cancelarEdicion(button) {
+            fetchArticulos();  
+        }
+        
+        //Elimina el articulo solo usa el ID para el php
+        function eliminarArticulo(button) {
+            const row = button.closest('tr');
+            const id = row.cells[0].textContent.trim();
+            const data = {
+                id: id,
+            };
+
+        
+            if (confirm('¿Estás seguro de que quieres eliminar este articulo?')) {
+               
+   
+        
+                fetch('php/eliminar_articulo.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        fetchArticulos();  
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        }
         
         
 

@@ -11,44 +11,45 @@
     
     <div class="containerRegistro">
         <h2>Registro</h2>
-        <form id="FormRegistro" action="php/registrar_usuario.php" method="POST">
+        <form id="FormRegistro">
             <h3>Datos personales</h3>
             <div class="form-row">
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" required>
+                    <input type="text" id="nombre" name="nombre" maxlength="30" required>
+                    <input type="hidden" name="rol" id="rol" value="2">
                 </div>
                 <div class="form-group">
                     <label for="correo">Correo electrónico</label>
-                    <input type="email" id="correo" name="correo" required>
+                    <input type="email" id="correo" name="correo" maxlength="30" required>
                 </div>     
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="clave">Contraseña</label>
-                    <input type="password" id="clave" name="clave" minlength="8" maxlength="25" required>
+                    <input type="password" id="clave" name="clave" minlength="8" maxlength="30" required>
                 </div>
                 <div class="form-group">
                     <label for="clave2">Repita su contraseña</label>
-                    <input type="password" id="clave2" name="clave2" minlength="8" maxlength="25" required>
+                    <input type="password" id="clave2" name="clave2" minlength="8" maxlength="30" required>
                 </div>
             </div>
-            <h3>Direccion de entrega</h3>
+            <h3>Domicilio</h3>
             
             <div class="form-row">
             <div class="form-group">
                 <label for="calle">Calle y numero</label>
-                <input type="text" id="calle" name="calle" required>
+                <input type="text" id="calle" name="calle" maxlength="30" required>
             </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="colonia">Colonia</label>
-                    <input type="text" id="colonia" name="colonia" required>
+                    <input type="text" id="colonia" name="colonia" maxlength="30" required>
                 </div>
                 <div class="form-group">
                     <label for="municipio">Municipio</label>
-                    <input type="text" id="municipio" name="municipio" required>
+                    <input type="text" id="municipio" name="municipio" maxlength="30" required>
                 </div>
             </div>
             <div class="form-row">
@@ -100,6 +101,32 @@
     </div>
 
     <script>
+
+        document.getElementById('FormRegistro').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            
+            fetch('php/registrar_usuario.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    this.reset(); 
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+
+
+
         document.getElementById('FormRegistro').addEventListener('submit', function(event) {
             var clave = document.getElementById('clave').value;
             var clave2 = document.getElementById('clave2').value;

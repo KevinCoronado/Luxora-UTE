@@ -8,8 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="estilos.css?v=<?php echo time(); ?">
-    <script src="/js/functions.js?v=<?php echo time(); ?>"></script>
+    <link rel="stylesheet" href="estilos.css">
     <title>Usuarios Admin</title>
 </head>
 <body>
@@ -116,7 +115,7 @@
     <div class="containerUsuarios">
         <h2>Lista de Usuarios</h2>
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Buscar por correo o nombre...">
+            <input type="text" id="searchInput" placeholder="Buscar por correo, nombre o id...">
         </div>
         <table>
             <thead>
@@ -132,19 +131,20 @@
             </tbody>
         </table>
 
-        <div id="pagination" class="pagination">
-            <!-- Paginación será añadida aquí dinámicamente -->
+        <div id="paginacion" class="paginacion">
         </div>
     </div>
 
     <script>
 
 
+        //Aqui dependiendo de si el rol es Admin o Usuario, se va a mostrar ciertos campos
         document.addEventListener('DOMContentLoaded', function() {
             const rolSeleccionado = document.getElementById('rol');
             const camposExtra = document.getElementById('usuario-campos-extra');
         
             rolSeleccionado.addEventListener('change', function() {
+                //Si es admin se ocultaran y si es usuario se mostraran
                 if (this.value === '1') {
                     camposExtra.style.display = 'none';
                     document.getElementById('calle').required = false;
@@ -168,10 +168,14 @@
 
 
 
+        //Accion que registra usuarios
         document.getElementById('agregarUsuarioForm').addEventListener('submit', function(event) {
+            //Evita que el formulario se envíe de la manera predeterminada, esto recargaria la pagina
             event.preventDefault();
+            //Se crea el formData donde se enviaran los datos
             const formData = new FormData(this);
             
+            //Llama al php para enviar el formData
             fetch('php/registrar_usuario.php', {
                 method: 'POST',
                 body: formData
@@ -179,6 +183,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    //Si fue exitoso dara una alerta y recargara la tabla de usuarios
                     alert(data.message);
                     this.reset(); 
                     fetchUsuarios(); 
@@ -191,29 +196,37 @@
             });
         });
 
+        //Aqui solo se asegura de que se introduzcan valores numericos en el Codigo Postal
         document.getElementById('cp').addEventListener('input', function(e) {
             var value = e.target.value;
             e.target.value = value.replace(/[^0-9]/g, '');
         });
 
+
+        //Se limita los usuarios por pagina
         const usuariosPorPagina = 8;
             let paginaActual = 1;
+            //Se crean los arrays
             let usuarios = [];
             let usuariosFiltrados = [];
 
+        //Esta funcion muestra usuarios por pagina
         function mostrarUsuarios(pagina) {
             const tablaCuerpo = document.getElementById('usuariosTableBody');
             tablaCuerpo.innerHTML = '';
 
+            //Se crea el indice inicio y fin
             const inicio = (pagina - 1) * usuariosPorPagina;
             const fin = inicio + usuariosPorPagina;
             const usuariosPagina = usuariosFiltrados.slice(inicio, fin);
 
+            //Si el rol es 1 mostrara admin y si es 2 mostrara usuario
             const rolMap = {
                 '1': 'Admin',
                 '2': 'User'
             };
 
+            //Crea filas por cada usuario
             usuariosPagina.forEach(usuario => {
                 const fila = document.createElement('tr');
                 fila.innerHTML = `
@@ -232,6 +245,8 @@
             actualizarPaginacion();
         }
 
+
+        //Usa el php para llamar a los usuarios
         function fetchUsuarios() {
             fetch('php/ver_usuarios.php')
                 .then(response => response.json())
@@ -246,12 +261,18 @@
         
 
 
+        //Esta funcion actualiza las paginas
         function actualizarPaginacion() {
-            const paginacion = document.getElementById('pagination');
+            //Aqui identifica el div y lo limpia
+            const paginacion = document.getElementById('paginacion');
             paginacion.innerHTML = '';
 
+
+            //Aqui se calcula el numero de paginas que habra
             const numPaginas = Math.ceil(usuariosFiltrados.length / usuariosPorPagina);
 
+
+            //Se crean los botones dependiendo el num de paginas
             for (let i = 1; i <= numPaginas; i++) {
                 const boton = document.createElement('button');
                 boton.textContent = i;
@@ -264,25 +285,32 @@
             }
         }
 
+        //Aqui se usa el search input para filtrar datos
         function filtrarUsuarios() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             usuariosFiltrados = usuarios.filter(usuario => 
+            //Se filtra por correo y nombre de usuario
                 usuario.Email.toLowerCase().includes(query) || 
-                usuario.Nombre_usuario.toLowerCase().includes(query)
+                usuario.Nombre_usuario.toLowerCase().includes(query) ||
+                usuario.Id_usuario.toLowerCase().includes(query)
 
             );
             paginaActual = 1;
             mostrarUsuarios(paginaActual);
         }
 
+        //Se usa la funcion filtrarUsuarios
         document.getElementById('searchInput').addEventListener('input', filtrarUsuarios);
 
+        //Se muestran los usuarios
         fetchUsuarios();
 
 
         //Editar y eliminar
 
+        //Esta funcion edita los usuarios
         function editarUsuario(button) {
+            //Obtiene los datos por numero de celda de la fila
             const row = button.closest('tr');
             const id = row.cells[0];  
             const nombre = row.cells[1].textContent;
@@ -306,6 +334,7 @@
 
         
 
+        //Si se confirma la edicion se mandara un json con los datos
         function confirmarEdicion(button, id) {
             const row = button.closest('tr');
             const idA = row.cells[0].textContent.trim();
@@ -340,22 +369,25 @@
             .catch(error => console.error('Error:', error));
         }
         
+        //Si se cancela la edicion se recargara la tabla
         function cancelarEdicion(button) {
             fetchUsuarios();  
         }
         
+        //Esta funcion elimina usuarios
         function eliminarUsuario(button) {
             const row = button.closest('tr');
-            const id = row.cells[0].textContent.trim();
+            const idA = row.cells[0].textContent.trim();
+            //Solo pide el id del usuario
             const data = {
-                id: id,
+                id: idA,
             };
 
         
+            //Muestra una alerta
             if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
                
-   
-        
+                //Se usa el php para eliminar el usuario
                 fetch('php/eliminar_usuario.php', {
                     method: 'POST',
                     headers: {

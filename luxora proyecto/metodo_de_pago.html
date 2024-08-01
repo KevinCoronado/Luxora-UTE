@@ -14,15 +14,15 @@
             <form action="#" method="POST" onsubmit="return validarCampos()">
                 <div class="form-group">
                     <label for="numeroTarjeta">Número de la Tarjeta</label>
-                    <input type="text" id="numeroTarjeta" name="numeroTarjeta"  maxlength="16" required>
+                    <input type="text" id="numeroTarjeta" name="numeroTarjeta" minlength="16  maxlength="16" required>
                 </div>
                 <div class="form-group">
                     <label for="fechaCaducidad">Fecha de Caducidad</label>
-                    <input type="text" maxlength="5" id="fechaCaducidad" name="fechaCaducidad" placeholder="MM/AA" required>
+                    <input type="text" minlength="5" maxlength="5" id="fechaCaducidad" name="fechaCaducidad" placeholder="MM/AA" required>
                 </div>
                 <div class="form-group">
                     <label for="cvv">CVV</label>
-                    <input type="text" id="cvv" name="cvv"maxlength="3" required>
+                    <input type="text" id="cvv" name="cvv" minlength="3" maxlength="3" required>
                 </div>
                 <button type="submit" class="entregar-btn">Pagar</button>
             </form>
@@ -39,6 +39,7 @@
 
 
     <script>
+        
         document.addEventListener('DOMContentLoaded', function() {
             var productoPrecio = 500; // Precio del producto EJEMPLO
             var envioPrecio = 100; // Precio del envío  EJEMPLO
@@ -51,9 +52,12 @@
         //Ese script agrega una diagonal automaticamente despues de los primeros dos digitos
         // de la fecha de caducidad
         document.getElementById('fechaCaducidad').addEventListener('input', function(e) {
-            var value = e.target.value.replace(/\D/g, '');
+            //Aqui e.taget.value es el valor de entrada y usa  (/\D/g, '') para eliminar todo valor que no sea numero
+            var value = e.target.value.replace(/\D/g, ''); 
             if (value.length > 4) value = value.slice(0, 4);
+            //Divide los valores en pares
             var formatted = value.match(/.{1,2}/g);
+            //Si formatted no es null, aggrega la / para separar los pares
             e.target.value = formatted ? formatted.join('/') : '';
         });
 
@@ -69,12 +73,12 @@
         });
 
 
+        //Checa que los campos tenga los datos correctos, en este caso el lenght de los inputs
         function validarCampos() {
             const numeroTarjeta = document.getElementById('numeroTarjeta');
             const fechaCaducidad = document.getElementById('fechaCaducidad');
             const cvv = document.getElementById('cvv');
             if (numeroTarjeta.value.length == 16 && fechaCaducidad.value.length == 5 && cvv.value.length == 3 ) {
-                
                 return true; // Permite que el formulario se envíe
             }else{
                 alert("Debe completar todos los campos.");
