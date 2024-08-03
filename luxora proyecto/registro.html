@@ -115,6 +115,7 @@
                 if (data.success) {
                     alert(data.message);
                     this.reset(); 
+                    window.location.href = 'login.html'; //AQUI VA LA DIRECCION DE LA PAGINA LOGIN
                 } else {
                     alert(data.message);
                 }
