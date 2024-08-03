@@ -26,6 +26,7 @@ CREATE TABLE Usuarios (
     Municipio VARCHAR(100) NOT NULL,
     Estado VARCHAR(100) NOT NULL,
     CP VARCHAR(10) NOT NULL,
+    Estado_activo BOOLEAN,
     INDEX (Rol),
     FOREIGN KEY (Rol) REFERENCES Rol(Id_rol)
 );
@@ -49,7 +50,8 @@ CREATE TABLE Articulos (
     Precio DECIMAL(10, 2) NOT NULL,
     Disponibilidad INT NOT NULL,
     Imagen VARCHAR(100) NOT NULL,
-    Marca VARCHAR(50) NOT NULL
+    Marca VARCHAR(50) NOT NULL,
+    Estado_activo BOOLEAN
 );
 
 CREATE TABLE Compras(
@@ -79,10 +81,13 @@ VALUES (1,1,1,2,"2024-07-30","2024-07-30",200,"M");
 #Modificaciones en la base de datos
 #Imagen en la tabla  articulos ya no es BLOB ahora es VARCHAR
 #En la tabla compras se añadio el campo talla y las fechas cambiaron de dato tipo TIMESTAMP A DATE, para quitar la hroa y que solo aparezca la fecha
-
+#Se agrego Estado_activo en Usuarios y Articulos, esto determina si la cuenta se elimino o no, esto apra evitar errores al msotrar la tabla compras
 SELECT*FROM Usuarios;
 SELECT*FROM Compras;
 SELECT*FROM Articulos;
+SELECT*FROM Metodo_de_pago;
 
+
+UPDATE Articulos SET Disponibilidad = Disponibilidad + 2 WHERE Id_articulo = 1;
 
 DROP DATABASE Luxora;
