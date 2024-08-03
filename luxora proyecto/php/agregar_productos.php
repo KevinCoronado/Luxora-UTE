@@ -25,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (move_uploaded_file($imagen_temp, $ruta_imagen)) {
 
         // Insertar los datos en la base de datos
-        $sql = "INSERT INTO Articulos (Nombre_articulo, Descripcion, Precio, Disponibilidad, Imagen, Marca) 
-                VALUES ('$nombre', '$descripcion', '$precio', '$disponibilidad', '$ruta', '$marca')";
+        $sql = "INSERT INTO Articulos (Nombre_articulo, Descripcion, Precio, Disponibilidad, Imagen, Marca, Estado_activo) 
+                VALUES ('$nombre', '$descripcion', '$precio', '$disponibilidad', '$ruta', '$marca', TRUE)";
 
         if ($conn->query($sql) === TRUE) {
             echo json_encode(['success' => true, 'message' => 'Articulo agregado exitosamente']);

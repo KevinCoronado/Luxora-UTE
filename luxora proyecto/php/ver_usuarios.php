@@ -1,7 +1,7 @@
 <?php
 include "conexion.php";
 //Selecciona todos los usuarios
-$sql = "SELECT Id_usuario,Nombre_usuario, Email, Rol FROM Usuarios";
+$sql = "SELECT Id_usuario,Nombre_usuario, Email, Rol FROM Usuarios WHERE Estado_activo = TRUE";
 $result = $conn->query($sql);
 
 $usuarios = array();

@@ -26,11 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     //La consulta SQL para insertar el nuevo usuario
     if ($rol == 1){
-        $sql = $conn->query("INSERT INTO Usuarios (Nombre_usuario, Clave, Email, Rol, Calle, Colonia, Municipio, Estado, CP)
-            VALUES ('$nombre_usuario', '$clave', '$email', '$rol', 'NA','NA', 'NA', 'NA', 'NA')");
+        $sql = $conn->query("INSERT INTO Usuarios (Nombre_usuario, Clave, Email, Rol, Calle, Colonia, Municipio, Estado, CP, Estado_activo)
+            VALUES ('$nombre_usuario', '$clave', '$email', '$rol', 'NA','NA', 'NA', 'NA', 'NA', TRUE)");
     }else{
-        $sql = $conn->query("INSERT INTO Usuarios (Nombre_usuario, Clave, Email, Rol, Calle, Colonia, Municipio, Estado, CP)
-            VALUES ('$nombre_usuario', '$clave', '$email', '$rol', '$calle','$colonia', '$municipio', '$estado', '$cp')");
+        $sql = $conn->query("INSERT INTO Usuarios (Nombre_usuario, Clave, Email, Rol, Calle, Colonia, Municipio, Estado, CP, Estado_activo)
+            VALUES ('$nombre_usuario', '$clave', '$email', '$rol', '$calle','$colonia', '$municipio', '$estado', '$cp',TRUE)");
     }
     
 

@@ -2,7 +2,8 @@
 include "conexion.php";
 
 // Consultar todos los productos
-$sql = "SELECT Id_articulo, Nombre_articulo, Descripcion, Precio, Disponibilidad, Imagen, Marca FROM Articulos";
+$sql = "SELECT Id_articulo, Nombre_articulo, Descripcion, Precio, Disponibilidad, Imagen, Marca FROM Articulos 
+        WHERE Estado_activo = TRUE";
 $result = $conn->query($sql);
 
 $articulos = array();

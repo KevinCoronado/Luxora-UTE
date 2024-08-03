@@ -6,8 +6,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $id = $data['id'];
 
-    //Se prepara el delete, stmt almacena el resultado del metodo
-    $stmt = $conn->prepare("DELETE FROM Usuarios WHERE Id_usuario = ?");
+    //Se prepara el update, stmt almacena el resultado del metodo
+    $stmt = $conn->prepare("UPDATE Usuarios SET Estado_activo = FALSE WHERE Id_usuario = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
 
