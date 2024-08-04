@@ -16,9 +16,9 @@
             <img src="imagenes/luxora_logo.png" alt="logo" class="logo">
         </a>
         <div class="nav-links">
-            <a href="admin_inicio.html">Usuarios</a>
-            <a href="admin_compras.html">Compras</a>
-            <a href="admin_productos.html">Artículos</a>
+            <a href="#">Usuarios</a>
+            <a href="#">Compras</a>
+            <a href="#">Artículos</a>
             <a href="#">Mi perfil</a>
         </div>
     </div>
@@ -37,7 +37,15 @@
                 </div>
                 <div class="form-group">
                     <label for="marca">Marca</label>
-                    <input type="text" id="marca" name="marca"  maxlength="30" required>
+                    <select id="marca" name="marca" required>
+                        <option value="">Selecciona una marca</option>
+                        <option value="Zara">Zara</option>
+                        <option value="Versace">Versace</option>
+                        <option value="Chanel">Chanel</option>
+                        <option value="Hermes">Hermes</option>
+                        <option value="Hugo Boss">Hugo Boss</option>
+                        <option value="Nike">Nike</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="imagen">Imagen</label>
@@ -225,11 +233,16 @@
             // Hacer que las celdas se vuelvan editables
             row.cells[1].innerHTML = `<input type="text" value="${nombre}" />`;
             row.cells[2].innerHTML = `<input type="text" value="${descripcion}" />`;
-            row.cells[3].innerHTML = `<input type="text" value="${marca}" />`;
+            row.cells[3].innerHTML = `<select>
+                <option value="Zara">Zara</option>
+                <option value="Versace">Versace</option>
+                <option value="Chanel">Chanel</option>
+                <option value="Hermes">Hermes</option>
+                <option value="Hugo Boss">Hugo Boss</option>
+                <option value="Nike">Nike</option>
+            </select>`;
             row.cells[4].innerHTML = `<input type="file" />`;
             row.cells[5].innerHTML = `<input type="text" value="${precio}" />`;
-
-        
             // Reemplazar el botón de Editar con Confirmar Edición y Cancelar
             row.cells[8].innerHTML = `
                 <button  class="editar-btn" onclick="confirmarEdicion(this)">Confirmar Edición</button>
@@ -245,7 +258,7 @@
             const idA = row.cells[0].textContent.trim();
             const nombre = row.cells[1].querySelector('input').value;
             const descripcion = row.cells[2].querySelector('input').value;
-            const marca = row.cells[3].querySelector('input').value;
+            const marca = row.cells[3].querySelector('select').value;
             const imagen = row.cells[4].querySelector('input[type="file"]');
             const precio = row.cells[5].querySelector('input').value;
 
