@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="navbar">
-        <a href="inicio.html" class="logo-link"> //Cambiar el link de HTML por el inicio de la pagina donde se muestran los productos que vera el usuario
+        <a href="inicio.html" class="logo-link">
         <img src="imagenes/luxora_logo.png" alt="logo" class="logo">
         </a>
         <div class="nav-links">
@@ -20,28 +20,61 @@
     </div>
     <div class="containerHistorial">
         <div class="compras-historial">
-        <h2>Historial de Compras</h2>
-            <div class="producto-comprado">
-                <img src="imagenes-productos/pantalon_zara.jpg" alt="Producto"> 
-                <div class="detalles-producto">
-                    <h3>Producto 1</h3>
-                    <p>Fecha de Compra: 01/07/2024</p>
-                    <p>Fecha de Llegada estimada: 05/07/2024</p>
-                    <p>Dirección de Entrega: Calle Falsa 123, Ciudad Apodaca, Nuevo Leon</p>
-                    <p>Precio: $100.00</p>
-                </div>
-            </div>
-            <div class="producto-comprado">
-                <img src="imagenes-productos/pantalon_zara.jpg" alt="Producto"> 
-                <div class="detalles-producto">
-                    <h3>Producto 1</h3>
-                    <p>Fecha de Compra: 01/07/2024</p>
-                    <p>Fecha de Llegada estimada: 05/07/2024</p>
-                    <p>Dirección de Entrega: Calle Falsa 123, Ciudad Apodaca, Nuevo Leon</p>
-                    <p>Precio: $100.00</p>
-                </div>
-            </div>
+            <h2>Historial de Compras</h2>
+            <div id="historial-container"></div>
         </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('php/historial_compras_usuario.php')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('historial-container');
+                    data.forEach(compra => {
+                        const productoDiv = document.createElement('div');
+                        productoDiv.classList.add('producto-comprado');
+                        
+                        //A continaucion se crean las variables de que se mostraran
+                        //y se agregan a productoDiv
+                        const img = document.createElement('img');
+                        img.src = `${compra.Imagen}`;
+                        img.alt = compra.Nombre_articulo;
+                        productoDiv.appendChild(img);
+                        
+                        const detallesDiv = document.createElement('div');
+                        detallesDiv.classList.add('detalles-producto');
+                        
+                        const nombre = document.createElement('h3');
+                        nombre.textContent = compra.Nombre_articulo;
+                        detallesDiv.appendChild(nombre);
+                        
+                        const fechaCompra = document.createElement('p');
+                        fechaCompra.textContent = `Fecha de Compra: ${compra.Fecha_compra}`;
+                        detallesDiv.appendChild(fechaCompra);
+                        
+                        const fechaArrivo = document.createElement('p');
+                        fechaArrivo.textContent = `Fecha de Llegada estimada: ${compra.Fecha_arrivo}`;
+                        detallesDiv.appendChild(fechaArrivo);
+                        
+                        const direccion = document.createElement('p');
+                        direccion.textContent = `Dirección de Entrega: ${compra.Calle} ${compra.Colonia}, ${compra.Municipio}, ${compra.Estado}, ${compra.CP}`;
+                        detallesDiv.appendChild(direccion);
+                        
+                        const precio = document.createElement('p');
+                        precio.textContent = `Precio: $${compra.Precio_total}`;
+                        detallesDiv.appendChild(precio);
+                        
+                        const talla = document.createElement('p');
+                        talla.textContent = `Talla: ${compra.Talla}`;
+                        detallesDiv.appendChild(talla);
+                        
+                        productoDiv.appendChild(detallesDiv);
+                        container.appendChild(productoDiv);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
+    </script>
 </body>
 </html>
