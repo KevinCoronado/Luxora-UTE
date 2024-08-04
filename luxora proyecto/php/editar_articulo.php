@@ -9,7 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $_POST['nombre'];
     $descripcion = $_POST['descripcion'];
     $marca = $_POST['marca'];
-    $disponibilidad = $_POST['disponibilidad'];
     $precio = $_POST['precio'];
 
     // Manejo de la subida de la imagen
@@ -26,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Si se sube una nueva imagen
         if (move_uploaded_file($imagen_temp, $ruta_imagen)) {
             $sql = "UPDATE Articulos SET Nombre_articulo = '$nombre', Descripcion = '$descripcion',
-                    Precio = '$precio', Disponibilidad = '$disponibilidad', Imagen = '$ruta', Marca = '$marca'
+                    Precio = '$precio', Imagen = '$ruta', Marca = '$marca'
                     WHERE Id_articulo = '$id'";
         } else {
             echo json_encode(['success' => false, 'message' => 'Error al subir la imagen']);
@@ -35,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         // Si no se sube una nueva imagen
         $sql = "UPDATE Articulos SET Nombre_articulo = '$nombre', Descripcion = '$descripcion',
-                Precio = '$precio', Disponibilidad = '$disponibilidad', Marca = '$marca'
+                Precio = '$precio', Marca = '$marca'
                 WHERE Id_articulo = '$id'";
     }
 
