@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="estilos.css?v=<?php echo(rand()); ?>">
+    <script src="/js/mi_script.js?v=<?php echo(rand()); ?>"></script>
     <title>Productos Admin</title>
 </head>
 <body>
@@ -15,9 +16,9 @@
             <img src="imagenes/luxora_logo.png" alt="logo" class="logo">
         </a>
         <div class="nav-links">
-            <a href="admin_inicio.html">Usuarios</a>
-            <a href="admin_compras.html">Compras</a>
-            <a href="admin_productos.html">Artículos</a>
+            <a href="#">Usuarios</a>
+            <a href="#">Compras</a>
+            <a href="#">Artículos</a>
             <a href="#">Mi perfil</a>
         </div>
     </div>
@@ -220,7 +221,6 @@
             const descripcion = row.cells[2].textContent;
             const marca = row.cells[3].textContent;
             const precio= row.cells[5].textContent;
-            const disponibilidad = row.cells[6].textContent;
         
             // Hacer que las celdas se vuelvan editables
             row.cells[1].innerHTML = `<input type="text" value="${nombre}" />`;
@@ -228,7 +228,7 @@
             row.cells[3].innerHTML = `<input type="text" value="${marca}" />`;
             row.cells[4].innerHTML = `<input type="file" />`;
             row.cells[5].innerHTML = `<input type="text" value="${precio}" />`;
-            row.cells[6].innerHTML = `<input type="text" value="${disponibilidad} " />`;
+
         
             // Reemplazar el botón de Editar con Confirmar Edición y Cancelar
             row.cells[8].innerHTML = `
@@ -248,7 +248,7 @@
             const marca = row.cells[3].querySelector('input').value;
             const imagen = row.cells[4].querySelector('input[type="file"]');
             const precio = row.cells[5].querySelector('input').value;
-            const disponibilidad = row.cells[6].querySelector('input').value;
+
             
 
            
@@ -266,7 +266,6 @@
                     formData2.append('imagen', ''); // Enviar una cadena vacía si no se selecciona imagen
                 }
                 formData2.append('precio', precio);
-                formData2.append('disponibilidad', disponibilidad);
             fetch('php/editar_articulo.php', {
                 method: 'POST',
                 body: formData2
