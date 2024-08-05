@@ -86,6 +86,8 @@
             const cvv = document.getElementById('cvv');
             if (numeroTarjeta.value.length == 16 && fechaCaducidad.value.length == 5 && cvv.value.length == 3) {
                 return true;
+                alert("Pago realizado exitosamente")
+            localStorage.removeItem('carrito'); // Borra los artículos del carrito
             } else {
                 alert("Debe completar todos los campos correctamente.");
                 return false;
@@ -93,11 +95,6 @@
         }
         
  
-        //Despues de comprar limpia el carrito
-        document.querySelector('form').addEventListener('submit', function() {
-            alert("Pago realizado exitosamente")
-            localStorage.removeItem('carrito'); // Borra los artículos del carrito
-        });
     </script>
 </body>
 </html>
