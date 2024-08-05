@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+        }
+        .form-group input[disabled] {
+            background-color: #e9e9e9;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .buttons .edit-btn {
+            background-color: #D4AF37;
+            color: white;
+        }
+        .buttons .logout-btn {
+            background-color: #000000;
+            color: white;
+        }
+        .buttons .delete-btn {
+            background-color: #4b1212;
+            color: white;
+        }
+        .buttons .confirm-btn {
+            background-color: #D4AF37;
+            color: white;
+        }
+        .buttons .cancel-btn {
+            background-color: #000000;
+            color: white;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #000000;
+            padding: 5px 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 5px px;
+            transition: background-color 0.3s;
+            margin-left: 20px;
+        }
+        .navbar a:hover {
+            background-color: #D4AF37;
+        }
+        .navbar .logo {
+            max-height: 80px;
+            width: auto;
+            cursor: pointer;
+        }
+        .navbar a .logo:hover {
+            background-color: #000000;
+        }
+        .navbar .logo-link:hover {
+            background-color: transparent; 
+        }
+        .navbar .nav-links {
+            display: flex;
+            margin-right: 50px;
+        }
+        .navbar .nav-links a {
+            margin-right:10px
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verifica si el usuario está logueado
+            if (localStorage.getItem('loggedInUser') !== 'true') {
+                // Redirige al login si no está autenticado
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="navbar">
+        <a href="marcas.html" class="logo-link">
+            <img src="imagenes/luxora_logo.png" alt="logo" class="logo">
+        </a>
+        <div class="nav-links">
+            <a href="marcas.html">Inicio</a>
+            <a href="historial_compras.html">Mis compras</a>
+            <a href="carrito.html">Mi carrito</a>
+            <a href="perfil_usuario.html">Mi perfil</a>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Perfil de Usuario</h2>
+        <form id="user-form" onsubmit="return validarFormulario()">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required maxlength="30" disabled>
+            </div>
+            <div class="form-group">
+                <label for="email">Correo:</label>
+                <input type="email" id="email" name="email" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="clave">Clave:</label>
+                <input type="password" id="clave" name="clave" required minlength="8" disabled>
+            </div>
+            <div class="form-group">
+                <label for="calle">Calle:</label>
+                <input type="text" id="calle" name="calle" required maxlength="30" disabled>
+            </div>
+            <div class="form-group">
+                <label for="colonia">Colonia:</label>
+                <input type="text" id="colonia" name="colonia" required maxlength="30" disabled>
+            </div>
+            <div class="form-group">
+                <label for="municipio">Municipio:</label>
+                <input type="text" id="municipio" name="municipio" required maxlength="30" disabled>
+            </div>
+            <div class="form-group">
+                <label for="estado">Estado:</label>
+                <select id="estado" name="estado" required disabled>
+                    <option value="">Selecciona un estado</option>
+                    <option value="Aguascalientes">Aguascalientes</option>
+                    <option value="Baja California">Baja California</option>
+                    <option value="Baja California Sur">Baja California Sur</option>
+                    <option value="Campeche">Campeche</option>
+                    <option value="Chiapas">Chiapas</option>
+                    <option value="Chihuahua">Chihuahua</option>
+                    <option value="Ciudad de México">Ciudad de México</option>
+                    <option value="Coahuila">Coahuila</option>
+                    <option value="Colima">Colima</option>
+                    <option value="Durango">Durango</option>
+                    <option value="Estado de México">Estado de México</option>
+                    <option value="Guanajuato">Guanajuato</option>
+                    <option value="Guerrero">Guerrero</option>
+                    <option value="Hidalgo">Hidalgo</option>
+                    <option value="Jalisco">Jalisco</option>
+                    <option value="Michoacán">Michoacán</option>
+                    <option value="Morelos">Morelos</option>
+                    <option value="Nayarit">Nayarit</option>
+                    <option value="Nuevo León">Nuevo León</option>
+                    <option value="Oaxaca">Oaxaca</option>
+                    <option value="Puebla">Puebla</option>
+                    <option value="Querétaro">Querétaro</option>
+                    <option value="Quintana Roo">Quintana Roo</option>
+                    <option value="San Luis Potosí">San Luis Potosí</option>
+                    <option value="Sinaloa">Sinaloa</option>
+                    <option value="Sonora">Sonora</option>
+                    <option value="Tabasco">Tabasco</option>
+                    <option value="Tamaulipas">Tamaulipas</option>
+                    <option value="Tlaxcala">Tlaxcala</option>
+                    <option value="Veracruz">Veracruz</option>
+                    <option value="Yucatán">Yucatán</option>
+                    <option value="Zacatecas">Zacatecas</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cp">CP:</label>
+                <input type="text" id="cp" name="cp" required maxlength="5" pattern="\d{5}" title="Debe ser un código postal de 5 dígitos" disabled>
+            </div>
+            <div class="buttons">
+                <button type="button" class="edit-btn" onclick="editarUsuario()">Editar</button>
+                <button type="button" class="logout-btn" onclick="cerrarSesion()">Cerrar Sesión</button>
+                <button type="button" class="delete-btn" onclick="eliminarCuenta()">Eliminar Cuenta</button>
+            </div>
+            <div class="buttons" id="edit-buttons" style="display: none;">
+                <button type="button" class="confirm-btn" onclick="confirmarEdicion()">Confirmar</button>
+                <button type="button" class="cancel-btn" onclick="cancelarEdicion()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Función para cargar los datos del usuario
+        window.onload = function() {
+            fetch('php/verMisDatosUsuario.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        document.getElementById('nombre').value = data.Nombre_usuario;
+                        document.getElementById('email').value = data.Email;
+                        document.getElementById('clave').value = data.Clave;
+                        document.getElementById('calle').value = data.Calle;
+                        document.getElementById('colonia').value = data.Colonia;
+                        document.getElementById('municipio').value = data.Municipio;
+                        document.getElementById('estado').value = data.Estado;
+                        document.getElementById('cp').value = data.CP;
+                    }
+                });
+        };
+
+        function editarUsuario() {
+            // Hacer que los campos sean editables
+            document.querySelectorAll('#user-form input, #user-form select').forEach(input => input.disabled = false);
+            // Mostrar botones de confirmar y cancelar
+            document.getElementById('edit-buttons').style.display = 'flex';
+            // Ocultar botones de editar, cerrar sesión y eliminar cuenta
+            document.querySelector('.edit-btn').style.display = 'none';
+            document.querySelector('.logout-btn').style.display = 'none';
+            document.querySelector('.delete-btn').style.display = 'none';
+        }
+
+        function validarFormulario() {
+            // Validar el formulario manualmente
+            const clave = document.getElementById('clave').value;
+            const cp = document.getElementById('cp').value;
+
+            if (clave.length < 8) {
+                alert('La clave debe tener al menos 8 caracteres.');
+                return false;
+            }
+
+            if (cp.length !== 5 || !/^\d{5}$/.test(cp)) {
+                alert('El código postal debe ser de 5 dígitos.');
+                return false;
+            }
+
+            return true; // Si todo está bien, permite enviar el formulario
+        }
+
+        function confirmarEdicion() {
+            if (!validarFormulario()) {
+                return; // No enviar el formulario si hay errores
+            }
+
+            const formData = new FormData(document.getElementById('user-form'));
+
+            fetch('php/editar_mi_usuario.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert(data.success);
+                    // Desactivar campos y ocultar botones de confirmar y cancelar
+                    document.querySelectorAll('#user-form input, #user-form select').forEach(input => input.disabled = true);
+                    document.getElementById('edit-buttons').style.display = 'none';
+                    // Mostrar botones de editar, cerrar sesión y eliminar cuenta
+                    document.querySelector('.edit-btn').style.display = 'block';
+                    document.querySelector('.logout-btn').style.display = 'block';
+                    document.querySelector('.delete-btn').style.display = 'block';
+                }
+            });
+        }
+
+        function cancelarEdicion() {
+            // Restaurar datos originales
+            window.onload();
+            // Desactivar campos y ocultar botones de confirmar y cancelar
+            document.querySelectorAll('#user-form input').forEach(input => input.disabled = true);
+            document.getElementById('edit-buttons').style.display = 'none';
+            // Mostrar botones de editar, cerrar sesión y eliminar cuenta
+            document.querySelector('.edit-btn').style.display = 'block';
+            document.querySelector('.logout-btn').style.display = 'block';
+            document.querySelector('.delete-btn').style.display = 'block';
+        }
+
+        function cerrarSesion() {
+            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                fetch('php/cerrar_sesion.php')
+                    .then(() => {
+                        localStorage.setItem('loggedInUser', 'false');
+                        window.location.href = 'login.html';
+                    });
+            }
+        }
+
+        function eliminarCuenta() {
+            if (confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')) {
+                fetch('php/desactivar_mi_usuario.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert(data.error);
+                        } else {
+                            localStorage.setItem('loggedInUser', 'false');
+                            alert(data.success);
+                            window.location.href = 'login.html';
+                        }
+                    });
+            }
+        }
+    </script>
+</body>
+</html>
