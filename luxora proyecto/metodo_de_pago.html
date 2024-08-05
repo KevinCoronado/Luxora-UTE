@@ -85,9 +85,9 @@
             const fechaCaducidad = document.getElementById('fechaCaducidad');
             const cvv = document.getElementById('cvv');
             if (numeroTarjeta.value.length == 16 && fechaCaducidad.value.length == 5 && cvv.value.length == 3) {
-                return true;
                 alert("Pago realizado exitosamente")
-            localStorage.removeItem('carrito'); // Borra los artículos del carrito
+                localStorage.removeItem('carrito'); // Borra los artículos del carrito
+                return true;
             } else {
                 alert("Debe completar todos los campos correctamente.");
                 return false;
