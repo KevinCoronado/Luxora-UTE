@@ -40,8 +40,10 @@
                     if(data.Rol === 'Admin'){
                         alert(data.message);
                         window.location.href = 'admin_inicio.html'; // Redirige al inicio del admin
+                        localStorage.setItem('loggedInAdmin', 'true');
                     } else if(data.Rol === 'Usuario'){
                         alert(data.message);
+                        localStorage.setItem('loggedInUser', 'true');
                         window.location.href = 'marcas.html'; // Redirige al inicio del usuario
                     }
                 } else {

@@ -8,6 +8,15 @@
     <link rel="icon" type="image/x-icon" href="imagenes/favicon.ico" />
     <title>Compras de la plataforma</title>
     <link rel="stylesheet" href="estilos.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verifica si el usuario está logueado
+            if (localStorage.getItem('loggedInAdmin') !== 'true') {
+                // Redirige al login si no está autenticado
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="navbar">
