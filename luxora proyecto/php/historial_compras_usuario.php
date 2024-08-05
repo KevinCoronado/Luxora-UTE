@@ -1,8 +1,8 @@
 <?php
 include 'conexion.php';
-
+session_start();
 // Obtener el ID del usuario (RECORDATORIOOOOOO CAMBIAR POR EL ID DE SESSION)
-$id_usuario = 1;
+$id_usuario = $_SESSION['user_id'];
 
 // Obtener el número de página actual
 $pagina = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1;

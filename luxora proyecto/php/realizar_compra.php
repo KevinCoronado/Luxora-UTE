@@ -1,5 +1,5 @@
 <?php
-require_once 'conexion.php'; // Asegúrate de que el archivo de conexión esté correctamente configurado
+require_once 'conexion.php'; 
 
 session_start();
 
@@ -8,12 +8,12 @@ $numeroTarjeta = $_POST['numeroTarjeta'];
 $fechaCaducidad = $_POST['fechaCaducidad'];
 $cvv = $_POST['cvv'];
 $carrito = json_decode($_POST['carritoData'], true);
-$id_usuario = 1; // Asegúrate de que el ID de usuario esté guardado en la sesión
+$_SESSION['user_id']; 
 
 // Registrar el método de pago
 $sql = "INSERT INTO Metodo_de_pago (Id_usuario, Num_tarjeta, Vencimiento, CVV) VALUES (?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("ssss", $id_usuario, $numeroTarjeta, $fechaCaducidad, $cvv);
+$stmt->bind_param("ssss",$_SESSION['user_id'], $numeroTarjeta, $fechaCaducidad, $cvv);
 $stmt->execute();
 $id_metodo = $stmt->insert_id;
 
@@ -25,7 +25,7 @@ foreach ($carrito as $item) {
     $precio_total = $item['precio'] * $item['cantidad'];
     $talla = $item['talla'];  // Usa la talla del carrito
 
-    $stmt->bind_param("iiidss", $id_usuario, $item['id'], $id_metodo, $item['cantidad'], $precio_total, $talla);
+    $stmt->bind_param("iiidss", $_SESSION['user_id'], $item['id'], $id_metodo, $item['cantidad'], $precio_total, $talla);
     $stmt->execute();
 
     // Actualizar la disponibilidad del artículo
