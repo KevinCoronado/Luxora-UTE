@@ -8,7 +8,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = $data['nombre'];
     $correo = $data['correo'];
     $rol = $data['rol'];
-
+ //Comprueba si el correo existe para que no se repitan usuarios
+  $sql_check_email = $conn->query("SELECT Email FROM Usuarios WHERE Email = '$correo' AND Id_usuario != $id");
+    if ($sql_check_email->num_rows > 0) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'El correo electrónico ya está registrado. Por favor, utiliza otro correo.'
+        ]);
+        exit();
+    }
 
     //El Update
     $stmt = $conn->prepare("UPDATE Usuarios SET Nombre_usuario = '$nombre', Email = '$correo',

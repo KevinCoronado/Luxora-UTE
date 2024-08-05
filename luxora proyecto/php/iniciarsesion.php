@@ -35,6 +35,7 @@ if ($result->num_rows > 0) {
         // Verificación de contraseña sin usar password_verify
         if ($password === $row['Clave']) {
             // Contraseña correcta
+            $_SESSION['loggedin'] = true;
             $_SESSION['user_id'] = $row['Id_usuario']; // Guardar ID de usuario en la sesión
             $_SESSION['user_role'] = $row['Rol']; // Guardar rol de usuario en la sesión
 
