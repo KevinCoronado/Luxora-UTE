@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Perfil</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="estilos.css" rel="stylesheet"?v=<?php echo(rand()); ?>
+    <script src="/js/mi_script.js?v=<?php echo(rand()); ?>"></script>
+    <style>
+        .perfil {
+            width: 600px;
+            margin: 50px auto;
+            padding: 25px;
+            margin-top: 600px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        .perfil h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .perfil label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .perfil input[type="text"], .perfil input[type="email"], .perfil input[type="password"] {
+            width: calc(100% - 30px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .botones {
+            text-align: center;
+        }
+        .botones input[type="button"], .botones input[type="submit"] {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #09ff00;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .botones input[type="button"].cancelar {
+            background-color: red;
+        }
+        .botones input[type="button"].eliminar{
+            background-color: red;
+        }
+        .botones input[type="button"]:hover, .botones input[type="submit"]:hover {
+            opacity: 0.9;
+        }
+        .boton-hidden {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation-->
+    <div class="navbar">
+        <a href="index.html" class="logo-link">
+            <img src="imagenes/luxora_logo.png" alt="logo" class="logo">
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Inicio</a>
+            <a href="historial_compras.html">Mis compras</a>
+            <a href="perfil.html">Mi perfil</a>
+            <a href="#">Mi carrito</a>
+        </div>
+    </div>
+    <div class="perfil">
+        <h2>Formulario de Registro</h2>
+        <form id="profileForm">
+            <div class="form-group">
+                <label for="nombre">Usuario:</label>
+                <input type="text" id="nombre" name="usuario" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo electrónico:</label>
+                <input type="email" id="correo" name="correo" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Repita su contraseña:</label>
+                <input type="password" id="confirm_password" name="confirm_password" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="direccion">Calle:</label>
+                <input type="text" id="direccion" name="direccion" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="calle_numero">Colonia:</label>
+                <input type="text" id="calle_numero" name="calle_numero" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="municipio">Municipio:</label>
+                <input type="text" id="municipio" name="municipio" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="estado">Estado:</label>
+                <input type="text" id="estado" name="estado" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="codigo_postal">Código Postal:</label>
+                <input type="text" id="codigo_postal" name="codigo_postal" required disabled>
+            </div>            
+            <div class="botones">
+                <input class="actualizar" type="button" value="Actualizar" onclick="enableEditing()">
+                <input class="confirmar boton-hidden" type="submit" value="Confirmar datos">
+                <input class="cancelar boton-hidden" type="button" value="Cancelar" onclick="cancelEditing()">
+                <input class="eliminar" type="button" value="Eliminar cuenta">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function enableEditing() {
+            let inputs = document.querySelectorAll('#profileForm input[type="text"], #profileForm input[type="email"], #profileForm input[type="password"]');
+            inputs.forEach(input => input.disabled = false);
+            document.querySelector('.actualizar').classList.add('boton-hidden');
+            document.querySelector('.confirmar').classList.remove('boton-hidden');
+            document.querySelector('.cancelar').classList.remove('boton-hidden');
+            document.querySelector('.eliminar').classList.add('boton-hidden');
+        }
+
+        function cancelEditing() {
+            let inputs = document.querySelectorAll('#profileForm input[type="text"], #profileForm input[type="email"], #profileForm input[type="password"]');
+            inputs.forEach(input => input.disabled = true);
+            document.querySelector('.actualizar').classList.remove('boton-hidden');
+            document.querySelector('.confirmar').classList.add('boton-hidden');
+            document.querySelector('.cancelar').classList.add('boton-hidden');
+            document.querySelector('.eliminar').classList.remove('boton-hidden');
+        }
+    </script>
+</body>
+</html>
