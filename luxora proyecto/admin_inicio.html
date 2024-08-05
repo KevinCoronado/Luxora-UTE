@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="imagenes/favicon.ico" />
     <link rel="stylesheet" href="estilos.css">
     <title>Usuarios Admin</title>
 </head>
@@ -324,7 +325,6 @@
                 <option value="2" ${rol === 'Usuario' ? 'selected' : ''}>Usuario</option>
                 <option value="1" ${rol === 'Admin' ? 'selected' : ''}>Admin</option>
             </select>`;
-        
             // Reemplazar el botón de Editar con Confirmar Edición y Cancelar
             row.cells[4].innerHTML = `
                 <button  class="editar-btn" onclick="confirmarEdicion(this)">Confirmar Edición</button>

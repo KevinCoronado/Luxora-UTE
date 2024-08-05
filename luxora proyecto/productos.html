@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="imagenes/favicon.ico" />
+    <title>Productos</title>
+    <style>
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #000000;
+            padding: 5px 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 5px px;
+            transition: background-color 0.3s;
+            margin-left: 20px;
+        }
+        .navbar a:hover {
+            background-color: #D4AF37;
+        }
+        .navbar .logo {
+            max-height: 80px;
+            width: auto;
+            cursor: pointer;
+        }
+        .navbar a .logo:hover {
+            background-color: #000000;
+        }
+        .navbar .logo-link:hover {
+            background-color: transparent; 
+        }
+        .navbar .nav-links {
+            display: flex;
+            margin-right: 50px;
+        }
+        .navbar .nav-links a {
+            margin-right:10px
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-top: 150px;
+            margin-bottom: 50px;
+            font-size: 24px;
+        }
+        .productos-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            max-width: 1200px;
+            margin-top: 20px auto;
+        }
+        .producto {
+            flex: 1 1 calc(33.333% - 40px);
+            max-width: 300px; /* Agregado para evitar que las tarjetas se expandan demasiado */
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .producto:hover {
+            transform: translateY(-5px);
+        }
+        .producto img {
+            max-width: 100%;
+            height: auto;
+            max-height: 400px; /* Tamaño máximo para las imágenes */
+            object-fit: contain;
+            border-radius: 8px 8px 0 0;
+        }
+        .producto h2 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .producto p {
+            font-size: 14px;
+            color: #555;
+        }
+        .producto .precio {
+            font-size: 16px;
+            color: #e67e22;
+            margin: 10px 0;
+        }
+        .producto .btn-agregar {
+            background-color: #D4AF37;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .producto .btn-agregar:hover {
+            background-color: #a08428;
+        }
+        @media (max-width: 768px) {
+            .producto {
+                flex: 1 1 calc(50% - 40px);
+            }
+        }
+        @media (max-width: 480px) {
+            .producto {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="marcas.html" class="logo-link">
+            <img src="imagenes/luxora_logo.png" alt="logo" class="logo">
+        </a>
+        <div class="nav-links">
+            <a href="marcas.html">Inicio</a>
+            <a href="historial_compras.html">Mis compras</a>
+            <a href="carrito.html">Mi carrito</a>
+            <a href="#">Mi perfil</a>
+        </div>
+    </div>
+    <h1>Productos de <span id="marcaSeleccionada"></span></h1>
+    <div class="productos-container" id="productos">
+        <!-- Aquí se mostrarán los productos filtrados -->
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var marcaSeleccionada = localStorage.getItem('marcaSeleccionada');
+            document.getElementById('marcaSeleccionada').textContent = marcaSeleccionada;
+
+            fetch('php/ver_productos.php')
+                .then(response => response.json())
+                .then(data => {
+                    var productosContainer = document.getElementById('productos');
+                    var productosMarca = data.filter(producto => producto.Marca === marcaSeleccionada && producto.Disponibilidad > 0);
+
+                    productosMarca.forEach(function(producto) {
+                        var productoElement = document.createElement('div');
+                        productoElement.classList.add('producto');
+
+                        // Crear opciones de tallas
+                        var tallas = ["S", "M", "L"];
+                        var opcionesTallas = tallas.map(talla => `<option value="${talla}">${talla}</option>`).join('');
+
+                        productoElement.innerHTML = `
+                            <img src="${producto.Imagen}" alt="${producto.Nombre_articulo}">
+                            <h2>${producto.Nombre_articulo}</h2>
+                            <p>${producto.Descripcion}</p>
+                            <p class="precio">Precio: $${producto.Precio}</p>
+                            <p>Disponibilidad: ${producto.Disponibilidad}</p>
+                            <select id="talla-${producto.Id_articulo}">
+                                ${opcionesTallas}
+                            </select>
+                            <button class="btn-agregar" onclick="agregarAlCarrito(${producto.Id_articulo}, '${producto.Nombre_articulo.replace(/'/g, "\\'")}', '${producto.Descripcion.replace(/'/g, "\\'")}', '${producto.Imagen}', ${producto.Precio}, ${producto.Disponibilidad})">Agregar al carrito</button>
+                        `;
+                        productosContainer.appendChild(productoElement);
+                    });
+                })
+                .catch(error => console.error('Error al cargar los productos:', error));
+        });
+
+        //Agrega al carrito el producto
+        function agregarAlCarrito(id, nombre, descripcion, imagen, precio, disponibilidad) {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            let talla = document.getElementById(`talla-${id}`).value; // Obtener talla seleccionada
+            let cantidad = 1; // O la cantidad que desees por defecto
+
+            // Verificar si el producto ya está en el carrito
+            let productoExistente = carrito.find(item => item.id === id && item.talla === talla);
+            if (productoExistente) {
+                productoExistente.cantidad += cantidad;
+            } else {
+                //Si no lo añade
+                carrito.push({ id, nombre, descripcion, imagen, precio, disponibilidad, cantidad, talla });
+            }
+
+            //Se guarda el carrito y muestra la alerta de producto agregado
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            alert(`Producto ${nombre} en talla ${talla} agregado al carrito`);
+        }
+    </script>
+</body>
+</html>

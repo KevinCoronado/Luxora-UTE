@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="imagenes/favicon.ico" />
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body class="carritoBody">
+    <div class="navbar">
+        <a href="marcas.html" class="logo-link">
+            <img src="imagenes/luxora_logo.png" alt="logo" class="logo">
+        </a>
+        <div class="nav-links">
+            <a href="marcas.html">Inicio</a>
+            <a href="historial_compras.html">Mis compras</a>
+            <a href="carrito.html">Mi carrito</a>
+            <a href="#">Mi perfil</a>
+        </div>
+    </div>
+    <h1 class="Titulo">Carrito de Compras</h1>
+    <div class="carrito-container" id="carrito">
+        <!-- Aquí se mostrarán los productos del carrito -->
+    </div>
+
+    <script>
+
+        //Aqui se manipula el Dom, o sea la estructura 
+        document.addEventListener("DOMContentLoaded", function() {
+            //Inicializa el carrito a aprtir de la variable que se guardo anteriormente en localStorage
+            //si no hay solo inicia un array vacio
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            var carritoContainer = document.getElementById('carrito');
+
+            if (carrito.length === 0) {
+                //Si esta vacio muestra que no hay productos    
+                carritoContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
+                return;
+            }
+            
+            
+            //Recorre cada producto y crea un div por cada uno
+            carrito.forEach(function(producto, index) {
+                var productoElement = document.createElement('div');
+                productoElement.classList.add('producto');
+                //Mete elementos HTML 
+                productoElement.innerHTML = `
+                    <img src="${producto.imagen}" alt="${producto.nombre}">
+                    <div class="producto-info">
+                        <h2>${producto.nombre}</h2>
+                        <p>${producto.descripcion}</p>
+                        <p class="precio">Precio: $${producto.precio}</p>
+                        <p>Cantidad: ${producto.cantidad}</p>
+                        <p>Talla: ${producto.talla}</p> 
+                        <button class="btn-eliminar" data-index="${index}">Eliminar</button>
+                    </div>
+                `;//En el boton eliminar se le indexa el id en la lista deel carrito
+                carritoContainer.appendChild(productoElement);
+            });
+
+            //llama a la funcion eliminar el id del index que agarro de la lista al clickear eliminar
+            carritoContainer.addEventListener('click', function(e) {
+                if (e.target && e.target.classList.contains('btn-eliminar')) {
+                    const index = e.target.getAttribute('data-index');
+                    eliminarProducto(index);
+                }
+            });
+
+
+            //Crea el boton pagar y le asigna la funcion realizar compra
+            var btnComprar = document.createElement('button');
+            btnComprar.classList.add('btn-comprar');
+            btnComprar.textContent = 'Realizar Compra';
+            btnComprar.onclick = function() {
+                realizarCompra();
+            };
+            carritoContainer.appendChild(btnComprar);
+        });
+
+
+        //Lee el carrito y elimina el indice que agarro luego guarda el carrito y lo recarga
+        function eliminarProducto(index) {
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            carrito.splice(index, 1); // Elimina el producto del array
+            localStorage.setItem('carrito', JSON.stringify(carrito));//guarda el carrito
+            location.reload(); // Recarga la página para actualizar el carrito
+        }
+
+
+        //Funcion de realizar compra, envia el carrito a la pagina metodo de pago donde pide datos de pago
+        function realizarCompra() {
+            // Obtener carrito desde localStorage
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    
+            // Redirigir a la página de método de pago con el carrito en el URL
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            window.location.href = 'metodo_de_pago.html';
+        }
+    </script>
+</body>
+</html>
