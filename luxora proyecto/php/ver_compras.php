@@ -1,7 +1,7 @@
 <?php
 include 'conexion.php';
 
-// Crea la consulta SQL para obtener los datos requeridos
+// Crea la consulta SQL para obtener los datos requeridos, ordenados por Id_compra de menor a mayor
 $sql = "
     SELECT 
         u.Nombre_usuario AS Nombre,
@@ -16,6 +16,7 @@ $sql = "
     FROM Compras c
     JOIN Usuarios u ON c.Id_usuario = u.Id_usuario
     JOIN Articulos a ON c.Id_articulo = a.Id_articulo
+    ORDER BY c.Id_compra ASC
 ";
 
 // Ejecutar la consulta
@@ -37,3 +38,4 @@ echo json_encode($compras);
 // Cerrar la conexión
 $conn->close();
 ?>
+
